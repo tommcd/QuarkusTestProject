@@ -1,0 +1,2 @@
+# QuarkusTestProject
+Quarkus playground
