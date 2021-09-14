@@ -30,4 +30,12 @@ public class TvShow {
     public void setCategory(final String category) {
         this.category = category;
     }
+
+    @Override public String toString() {
+        return "TvShow{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", category='" + category + '\'' +
+                '}';
+    }
 }
