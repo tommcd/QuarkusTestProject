@@ -12,18 +12,23 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Path("/api/tv")
 public class TvShowResource {
 
-    List<TvShow> tvShows = new ArrayList<>();
+    //List<TvShow> tvShows = new ArrayList<>();
+    private Set<TvShow> tvShows = Collections.newSetFromMap(Collections.synchronizedMap(new LinkedHashMap<>()));
+
     private final AtomicLong counter = new AtomicLong();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TvShow> getAll() {
+    public Set<TvShow> getAll() {
         return tvShows;
     }
 
