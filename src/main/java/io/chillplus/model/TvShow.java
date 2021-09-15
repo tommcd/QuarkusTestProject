@@ -1,11 +1,20 @@
 package io.chillplus.model;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class TvShow {
     private Long id;
+
+    @NotBlank
+    @NotNull
     private String title;
     private String category;
 
-    public TvShow() {}
+    public TvShow() {
+    }
 
     public Long getId() {
         return id;
