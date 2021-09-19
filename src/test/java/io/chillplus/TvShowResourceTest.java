@@ -36,7 +36,7 @@ public class TvShowResourceTest {
                 .body("$.size()", is(0));
 
         TvShow tvShow = new TvShow();
-        tvShow.setTitle(DEFAULT_TITLE);
+        tvShow.title = DEFAULT_TITLE;
 
         given()
                 .body(tvShow)
@@ -47,7 +47,7 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(tvShow.getTitle()));
+                .body("title", is(tvShow.title));
 
         given()
         .when()
@@ -58,8 +58,8 @@ public class TvShowResourceTest {
                 .body("$.size()", is(1));
 
         TvShow tvShowWithId = new TvShow();
-        tvShow.setId(1L);
-        tvShow.setTitle(DEFAULT_TITLE);
+        tvShow.id = 1L;
+        tvShow.title = DEFAULT_TITLE;
 
         given()
                 .body(tvShowWithId)
@@ -82,7 +82,7 @@ public class TvShowResourceTest {
                 .body("$.size()", is(0));
 
         TvShow tvShow = new TvShow();
-        tvShow.setTitle("");
+        tvShow.title = "";
 
         given()
                 .body(tvShow)
@@ -113,7 +113,7 @@ public class TvShowResourceTest {
                 .body("$.size()", is(0));
 
         TvShow bbShow = new TvShow();
-        bbShow.setTitle("AA");
+        bbShow.title = "AA";
 
         given()
                 .body(bbShow)
@@ -124,10 +124,10 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(bbShow.getTitle()));
+                .body("title", is(bbShow.title));
 
         TvShow aaShow = new TvShow();
-        aaShow.setTitle("BB");
+        aaShow.title = "BB";
 
         given()
                 .body(aaShow)
@@ -138,7 +138,7 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(aaShow.getTitle()));
+                .body("title", is(aaShow.title));
 
         given()
         .when()
@@ -160,7 +160,7 @@ public class TvShowResourceTest {
                 .body("$.size()", is(0));
 
         TvShow tvShow = new TvShow();
-        tvShow.setTitle(DEFAULT_TITLE);
+        tvShow.title = DEFAULT_TITLE;
 
         given()
                 .body(tvShow)
@@ -171,7 +171,7 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(tvShow.getTitle()));
+                .body("title", is(tvShow.title));
 
         given()
         .when()
@@ -192,7 +192,7 @@ public class TvShowResourceTest {
     @Test
     public void deleteAllTvShows() {
         TvShow tvShow = new TvShow();
-        tvShow.setTitle(DEFAULT_TITLE);
+        tvShow.title = DEFAULT_TITLE;
 
         given()
                 .body(tvShow)
@@ -203,7 +203,7 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(tvShow.getTitle()));
+                .body("title", is(tvShow.title));
 
         given()
         .when()
@@ -231,7 +231,7 @@ public class TvShowResourceTest {
     @Test
     public void deleteOneTvShow() {
         TvShow tvShow = new TvShow();
-        tvShow.setTitle(DEFAULT_TITLE);
+        tvShow.title = DEFAULT_TITLE;
 
         given()
                 .body(tvShow)
@@ -242,7 +242,7 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(tvShow.getTitle()));
+                .body("title", is(tvShow.title));
 
         given()
         .when()

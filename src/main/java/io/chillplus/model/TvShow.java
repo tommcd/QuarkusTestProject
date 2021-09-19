@@ -1,44 +1,22 @@
 package io.chillplus.model;
 
-import org.hibernate.validator.constraints.Length;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
-public class TvShow {
-    private Long id;
+@Entity
+@Table(name = "tv_show")
+public class TvShow extends PanacheEntity {
 
     @NotBlank
-    @NotNull
-    private String title;
-    private String category;
+    @Column(name = "title", nullable = false)
+    public String title;
 
-    public TvShow() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(final String category) {
-        this.category = category;
-    }
+    @Column(name = "category")
+    public String category;
 
     @Override public String toString() {
         return "TvShow{" +
