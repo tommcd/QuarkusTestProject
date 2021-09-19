@@ -66,6 +66,7 @@ public class TvShowResource {
     @DELETE
     public Response deleteAll() {
         tvShows.clear();
+        counter.set(0L);
         return Response.ok().build();
     }
 

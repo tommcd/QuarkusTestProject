@@ -1,6 +1,7 @@
 package io.chillplus;
 
 import io.chillplus.model.TvShow;
+import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +11,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
+@TestHTTPEndpoint(TvShowResource.class)
 public class TvShowResourceTest {
 
     public static final String DEFAULT_TITLE = "AAA";
@@ -17,18 +19,18 @@ public class TvShowResourceTest {
     @BeforeEach
     public void beforeEach() {
         given()
-                .when()
-                .delete("/api/tv")
-                .then()
+        .when()
+                .delete()
+        .then()
                 .statusCode(200);
     }
 
     @Test
     public void createTvShow() {
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
@@ -40,17 +42,17 @@ public class TvShowResourceTest {
                 .body(tvShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
                 .body("title", is(tvShow.getTitle()));
 
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(1));
@@ -63,18 +65,18 @@ public class TvShowResourceTest {
                 .body(tvShowWithId)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(400);
     }
 
     @Test
     public void checkTvShowTitleIsNotBlank() {
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
@@ -86,15 +88,15 @@ public class TvShowResourceTest {
                 .body(tvShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(400);
 
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
@@ -103,9 +105,9 @@ public class TvShowResourceTest {
     @Test
     public void getAllTvShows() {
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
@@ -117,9 +119,9 @@ public class TvShowResourceTest {
                 .body(bbShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
                 .body("title", is(bbShow.getTitle()));
@@ -131,17 +133,17 @@ public class TvShowResourceTest {
                 .body(aaShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
                 .body("title", is(aaShow.getTitle()));
 
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(2));
@@ -150,9 +152,9 @@ public class TvShowResourceTest {
     @Test
     public void getOneTvShow() {
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
@@ -164,27 +166,26 @@ public class TvShowResourceTest {
                 .body(tvShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
                 .body("title", is(tvShow.getTitle()));
 
-
         given()
-                .when()
-                .get("/api/tv/{id}", 0)
-                .then()
+        .when()
+                .get("/{id}", 1)
+        .then()
                 .statusCode(200);
     }
 
     @Test
     public void getNonExistingTvShow() {
         given()
-                .when()
-                .get("/api/tv/42")
-                .then()
+        .when()
+                .get("/42")
+        .then()
                 .statusCode(404);
     }
 
@@ -197,31 +198,31 @@ public class TvShowResourceTest {
                 .body(tvShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
                 .body("title", is(tvShow.getTitle()));
 
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(1));
 
         given()
-                .when()
-                .delete("/api/tv")
-                .then()
+        .when()
+                .delete()
+        .then()
                 .statusCode(200);
 
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
@@ -236,31 +237,31 @@ public class TvShowResourceTest {
                 .body(tvShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
-                .when()
-                .post("/api/tv")
-                .then()
+        .when()
+                .post()
+        .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
                 .body("title", is(tvShow.getTitle()));
 
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(1));
 
         given()
-                .when()
-                .delete("/api/tv")
-                .then()
+        .when()
+                .delete()
+        .then()
                 .statusCode(200);
 
         given()
-                .when()
-                .get("/api/tv")
-                .then()
+        .when()
+                .get()
+        .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
