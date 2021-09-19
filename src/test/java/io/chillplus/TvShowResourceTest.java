@@ -162,7 +162,7 @@ public class TvShowResourceTest {
         TvShow tvShow = new TvShow();
         tvShow.title = DEFAULT_TITLE;
 
-        given()
+        TvShow result = given()
                 .body(tvShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -171,11 +171,12 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(tvShow.title));
+                .body("title", is(tvShow.title))
+        .extract().as(TvShow.class);;
 
         given()
         .when()
-                .get("/{id}", 1)
+                .get("/{id}", result.id)
         .then()
                 .statusCode(200);
     }
@@ -184,7 +185,7 @@ public class TvShowResourceTest {
     public void getNonExistingTvShow() {
         given()
         .when()
-                .get("/42")
+                .get("/0")
         .then()
                 .statusCode(404);
     }
