@@ -6,18 +6,18 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Optional;
 
 @Path("/api/tv")
 @Produces(MediaType.APPLICATION_JSON)
@@ -50,7 +50,8 @@ public class TvShowResource {
 
     @GET
     public List<TvShow> getAll() {
-        return TvShow.listAll();
+        //return TvShow.listAll();
+        return TvShow.findAllOrderByTitle();
     }
 
     @GET
@@ -87,5 +88,24 @@ public class TvShowResource {
     public Response deleteOne(@PathParam("id") long id) {
         TvShow.deleteById(id);
         return Response.ok().build();
+    }
+
+    @GET
+    @Path("/search/{title}")
+    public TvShow getOneByTitle(@PathParam("title") String title) {
+        TvShow entity = TvShow.findByTitle(title);
+        if (entity == null) {
+            throw new WebApplicationException("Entity does not exist.", Response.Status.NOT_FOUND);
+        }
+        return entity;
+    }
+
+    @GET
+    @Path("/categories/{category}")
+    public List<TvShow> getAllByCategory(
+            @PathParam("category") String category,
+            @DefaultValue("1") @QueryParam(value = "page") int page,
+            @DefaultValue("20") @QueryParam(value = "size") int size) {
+        return TvShow.findByCategoryIgnoreCase(category, page, size);
     }
 }

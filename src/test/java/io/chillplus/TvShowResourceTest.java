@@ -7,11 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
-
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
@@ -167,7 +168,7 @@ public class TvShowResourceTest {
     }
 
     @Test
-    public void getAllTvShows() {
+    public void getAllTvShowsOrderByTitle() {
         given()
         .when()
                 .get()
@@ -177,7 +178,7 @@ public class TvShowResourceTest {
                 .body("$.size()", is(0));
 
         TvShow bbShow = new TvShow();
-        bbShow.title = "AA";
+        bbShow.title = "BB";
 
         given()
                 .body(bbShow)
@@ -191,7 +192,7 @@ public class TvShowResourceTest {
                 .body("title", is(bbShow.title));
 
         TvShow aaShow = new TvShow();
-        aaShow.title = "BB";
+        aaShow.title = "AA";
 
         given()
                 .body(aaShow)
@@ -211,7 +212,10 @@ public class TvShowResourceTest {
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(2))
-                .extract().jsonPath().getList("", TvShow.class);;
+                .extract().jsonPath().getList("", TvShow.class);
+
+        assertThat(result.get(0).title, equalTo("AA"));
+        assertThat(result.get(1).title, equalTo("BB"));
     }
 
     @Test
