@@ -6,6 +6,10 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.ws.rs.core.Response;
+
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.hamcrest.Matchers.is;
@@ -38,7 +42,7 @@ public class TvShowResourceTest {
         TvShow tvShow = new TvShow();
         tvShow.title = DEFAULT_TITLE;
 
-        given()
+        TvShow result = given()
                 .body(tvShow)
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
@@ -47,7 +51,8 @@ public class TvShowResourceTest {
         .then()
                 .statusCode(201)
                 .contentType(APPLICATION_JSON)
-                .body("title", is(tvShow.title));
+                .body("title", is(tvShow.title))
+        .extract().as(TvShow.class);
 
         given()
         .when()
@@ -68,7 +73,7 @@ public class TvShowResourceTest {
         .when()
                 .post()
         .then()
-                .statusCode(400);
+                .statusCode(Response.Status.BAD_REQUEST.getStatusCode());
     }
 
     @Test
@@ -100,6 +105,65 @@ public class TvShowResourceTest {
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
                 .body("$.size()", is(0));
+    }
+
+    @Test
+    public void updateTvShow() {
+        given()
+        .when()
+                .get()
+        .then()
+                .statusCode(200)
+                .contentType(APPLICATION_JSON)
+                .body("$.size()", is(0));
+
+        TvShow tvShow = new TvShow();
+        tvShow.title = DEFAULT_TITLE;
+
+        TvShow tvShowPersisted = given()
+                .body(tvShow)
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+        .when()
+                .post()
+        .then()
+                .statusCode(201)
+                .contentType(APPLICATION_JSON)
+                .body("title", is(tvShow.title))
+        .extract().as(TvShow.class);
+
+        given()
+        .when()
+                .get()
+        .then()
+                .statusCode(200)
+                .contentType(APPLICATION_JSON)
+                .body("$.size()", is(1));
+
+        tvShowPersisted.title = "BB";
+
+        given()
+                .body(tvShowPersisted)
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+        .when()
+                .put()
+        .then()
+                .statusCode(200)
+                .contentType(APPLICATION_JSON)
+                .body("title", is("BB"));
+
+        TvShow tvShowWithoutId = new TvShow();
+        tvShow.title = DEFAULT_TITLE;
+
+        given()
+                .body(tvShowWithoutId)
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+        .when()
+                .put()
+        .then()
+                .statusCode(400);
     }
 
     @Test
@@ -140,13 +204,14 @@ public class TvShowResourceTest {
                 .contentType(APPLICATION_JSON)
                 .body("title", is(aaShow.title));
 
-        given()
+        List<TvShow> result = given()
         .when()
                 .get()
         .then()
                 .statusCode(200)
                 .contentType(APPLICATION_JSON)
-                .body("$.size()", is(2));
+                .body("$.size()", is(2))
+                .extract().jsonPath().getList("", TvShow.class);;
     }
 
     @Test
